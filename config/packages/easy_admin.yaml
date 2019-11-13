@@ -1,0 +1,59 @@
+easy_admin:
+    site_name: '%site_name%'
+
+    formats:
+        datetime: 'd/m/Y'
+
+    design:
+        menu:
+            - label: Players
+              entity: Player
+            - label: Wins
+              entity: Win
+            - label: Play
+              route: play_play
+
+    entities:
+        Player:
+            class: App\Entity\Player
+
+            list:
+                filters: ['enabled']
+
+                actions: ['show', 'edit', 'search', '-delete']
+
+                sort: ['name', 'ASC']
+
+                fields:
+                    - property: name
+                    - property: enabled
+                    - property: wins
+
+            form:
+                actions: ['-delete']
+
+                fields:
+                    - property: name
+                    - property: enabled
+
+            show:
+                fields:
+                    - property: name
+                    - property: wins
+                      template: admin/player/wins.html.twig
+
+        Win:
+            class: App\Entity\Win
+
+            list:
+                filters: ['player']
+
+                actions: ['search', '-new', '-edit', '-delete']
+
+                sort: ['createdAt', 'DESC']
+
+                fields:
+                    - property: player
+                    - property: createdAt
+                      label: Date
+                    - property: prizeCollected

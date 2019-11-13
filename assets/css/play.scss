@@ -1,0 +1,31 @@
+@import "~bootstrap/scss/bootstrap";
+
+// body {
+//     background: red;
+// }
+
+#wins-today {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#wheel-wrapper {
+  position: relative;
+  width: 800px;
+  height: 800px;
+
+  #pointer {
+    position: absolute;
+    width: 497px * .3;
+    height: 294px * .3;
+    background: {
+      image: url("../images/spruce.png");
+      size: 100% 100%;
+    }
+
+    right: -100px;
+    top: 50%;
+    margin-top: -10px;
+  }
+}

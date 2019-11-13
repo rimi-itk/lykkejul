@@ -1,0 +1,7 @@
+{% if value|default(false) %}
+    <ol class="list-unstyled">
+        {% for win in value %}
+            <li>{{ win.createdAt|date('d/m/Y') }}</li>
+        {% endfor %}
+    </ol>
+{% endif %}

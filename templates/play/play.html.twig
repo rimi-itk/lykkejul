@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Spin the wheel!'|trans %}
+
+{% block body %}
+    {% if wins_today|default(false) %}
+        <section id="wins-today">
+            <header>
+                <h1>{{ 'Wins today'|trans }} ({{ 'now'|date('l d. F') }})</h1>
+            </header>
+
+            <ol class="list-unstyled">
+                {% for win in wins_today %}
+                    <li>{{ win.player.name }}</li>
+                {% endfor %}
+            </ol>
+        </section>
+    {% endif %}
+
+    {% if players|default(false) %}
+        <div id="wheel-wrapper">
+            <div id="pointer"></div>
+            <canvas id='wheel'></canvas>
+        </div>
+
+        <button type="button" class="btn btn-success" id="spin-the-wheel">{{ 'Spin the wheel'|trans }}</button>
+
+        <div id="winModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'The winner is'|trans }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="winner-name"></p>
+                    </div>
+                    <div class="modal-footer">
+                        {{ form_start(form) }}
+                            {{ form_widget(form.submit, {
+                                attr: {
+                                    class: 'btn-success'
+                                }
+                                }) }}
+                            <div style="display: none">{{ form_rest(form) }}</div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="alert alert-warning">{{ 'Game over'|trans }}</div>
+    {% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('play') }}
+{% endblock %}
+
+{% block javascripts %}
+    {% set colors = [
+        '#eae56f',
+        '#89f26e',
+        '#7de6ef',
+        '#e7706f',
+        ]
+    %}
+    {% if players|default(false) %}
+        {% set segments = players|map(p => {text: p.name, id: p.id}) %}
+        {% set winwheel_settings = {
+            constructor_arguments: {
+                numSegments: segments|length,
+                segments: segments,
+                lineWidth: 3
+            },
+            colors: colors
+            }
+        %}
+        <script>
+            var winwheel_settings = {{ winwheel_settings|json_encode|raw }}
+        </script>
+        {{ encore_entry_script_tags('play') }}
+    {% endif %}
+{% endblock %}
