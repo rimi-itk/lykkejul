@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="da" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="BCGa5B8" resname="Spin the wheel!">
+        <source>Spin the wheel!</source>
+        <target state="translated">Drej julet!</target>
+      </trans-unit>
+      <trans-unit id="I7etyyy" resname="Wins today">
+        <source>Wins today</source>
+        <target state="translated">Dagens vindere</target>
+      </trans-unit>
+      <trans-unit id="XFQBRU1" resname="Spin the wheel">
+        <source>Spin the wheel</source>
+        <target state="translated">Drej julet</target>
+      </trans-unit>
+      <trans-unit id="AZ8Sf_A" resname="The winner is">
+        <source>The winner is</source>
+        <target state="translated">Vinderen er</target>
+      </trans-unit>
+      <trans-unit id="hpDPc58" resname="Game over">
+        <source>Game over</source>
+        <target state="translated">Spillet er slut</target>
+      </trans-unit>
+      <trans-unit id="hOEqxlX" resname="Players">
+        <source>Players</source>
+        <target state="translated">Spillere</target>
+      </trans-unit>
+      <trans-unit id="uYChRcX" resname="Win">
+        <source>Win</source>
+        <target state="translated">Vinder</target>
+      </trans-unit>
+      <trans-unit id="QdqLcp." resname="Wins">
+        <source>Wins</source>
+        <target state="translated">Vindere</target>
+      </trans-unit>
+      <trans-unit id="Q25hAW4" resname="Play">
+        <source>Play</source>
+        <target state="translated">Spil</target>
+      </trans-unit>
+      <trans-unit id="mcQKtAW" resname="Date">
+        <source>Date</source>
+        <target state="translated">Dato</target>
+      </trans-unit>
+      <trans-unit id="zAEADX0" resname="Prize collected">
+        <source>Prize collected</source>
+        <target state="translated">Pakke hentet</target>
+      </trans-unit>
+      <trans-unit id="ZK7oxsv" resname="Player">
+        <source>Player</source>
+        <target state="translated">Spiller</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

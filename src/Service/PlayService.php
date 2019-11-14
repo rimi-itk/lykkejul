@@ -27,15 +27,15 @@ class PlayService
     {
         $query = $this->entityManager->createQuery(<<<'DQL'
 SELECT player
-FROM App\Entity\Player player
-WHERE player.id
-NOT IN (
-SELECT p.id
-FROM App\Entity\Player p
-JOIN p.wins w
-GROUP BY w.player
-HAVING COUNT(w.id) >= :max_number_of_wins
-)
+  FROM App\Entity\Player player
+ WHERE player.enabled = true
+   AND player.id NOT IN (
+         SELECT p.id
+           FROM App\Entity\Player p
+           JOIN p.wins w
+       GROUP BY w.player
+         HAVING COUNT(w.id) >= :max_number_of_wins
+   )
 DQL
         );
 

@@ -48,7 +48,7 @@ easy_admin:
             list:
                 filters: ['player']
 
-                actions: ['search', '-new', '-edit', '-delete']
+                actions: ['search', '-new', '-edit']
 
                 sort: ['createdAt', 'DESC']
 

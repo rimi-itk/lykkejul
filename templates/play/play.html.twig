@@ -3,57 +3,63 @@
 {% block title 'Spin the wheel!'|trans %}
 
 {% block body %}
-    {% if wins_today|default(false) %}
-        <section id="wins-today">
-            <header>
-                <h1>{{ 'Wins today'|trans }} ({{ 'now'|date('l d. F') }})</h1>
-            </header>
+    <div class="row">
 
-            <ol class="list-unstyled">
-                {% for win in wins_today %}
-                    <li>{{ win.player.name }}</li>
-                {% endfor %}
-            </ol>
-        </section>
-    {% endif %}
+        {% if players|default(false) %}
+            <div class="col">
+                <div id="wheel-wrapper">
+                    <div id="pointer"></div>
+                    <canvas id='wheel'></canvas>
+                </div>
 
-    {% if players|default(false) %}
-        <div id="wheel-wrapper">
-            <div id="pointer"></div>
-            <canvas id='wheel'></canvas>
-        </div>
+                <button type="button" class="btn btn-success" id="spin-the-wheel">{{ 'Spin the wheel'|trans }}</button>
 
-        <button type="button" class="btn btn-success" id="spin-the-wheel">{{ 'Spin the wheel'|trans }}</button>
-
-        <div id="winModal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ 'The winner is'|trans }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="winner-name"></p>
-                    </div>
-                    <div class="modal-footer">
-                        {{ form_start(form) }}
-                            {{ form_widget(form.submit, {
-                                attr: {
-                                    class: 'btn-success'
-                                }
-                                }) }}
-                            <div style="display: none">{{ form_rest(form) }}</div>
-                        {{ form_end(form) }}
+                <div id="winModal" class="modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ 'The winner is'|trans }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="winner-name"></p>
+                            </div>
+                            <div class="modal-footer">
+                                {{ form_start(form) }}
+                                    {{ form_widget(form.submit, {
+                                        attr: {
+                                            class: 'btn-success'
+                                        }
+                                        }) }}
+                                    <div style="display: none">{{ form_rest(form) }}</div>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% else %}
+            <div class="alert alert-warning">{{ 'Game over'|trans }}</div>
+        {% endif %}
 
-    {% else %}
-        <div class="alert alert-warning">{{ 'Game over'|trans }}</div>
-    {% endif %}
+        {% if wins_today|default(false) %}
+            <div class="col">
+                <section id="wins-today">
+                    <header>
+                        <h1>{{ 'Wins today'|trans }} ({{ 'now'|date('l d. F') }})</h1>
+                    </header>
+
+                    <ol class="list-unstyled">
+                        {% for win in wins_today %}
+                            <li>{{ win.player.name }}</li>
+                        {% endfor %}
+                    </ol>
+                </section>
+            </div>
+        {% endif %}
+
 {% endblock %}
 
 {% block stylesheets %}

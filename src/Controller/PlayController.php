@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Win;
 use App\Form\Type\PlayType;
+use App\Repository\WinRepository;
 use App\Service\PlayService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,6 +41,18 @@ class PlayController extends AbstractController
             'form' => $form->createView(),
             'players' => $players,
             'wins_today' => $playService->getWins(new \DateTime()),
+        ]);
+    }
+
+    /**
+     * @Route("/wins", name="wins")
+     */
+    public function wins(Request $request, WinRepository $repository)
+    {
+        $wins = $repository->findBy([], ['createdAt' => 'DESC']);
+
+        return $this->render('play/wins.html.twig', [
+            'wins' => $wins,
         ]);
     }
 }
