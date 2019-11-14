@@ -7,12 +7,13 @@
 
         {% if players|default(false) %}
             <div class="col">
+                {# <button type="button" class="btn btn-success" id="spin-the-wheel">{{ 'Spin the wheel'|trans }}</button> #}
+
                 <div id="wheel-wrapper">
                     <div id="pointer"></div>
                     <canvas id='wheel'></canvas>
                 </div>
 
-                <button type="button" class="btn btn-success" id="spin-the-wheel">{{ 'Spin the wheel'|trans }}</button>
 
                 <div id="winModal" class="modal fade" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -29,8 +30,9 @@
                             <div class="modal-footer">
                                 {{ form_start(form) }}
                                     {{ form_widget(form.submit, {
+                                        label: 'Nå',
                                         attr: {
-                                            class: 'btn-success'
+                                            class: 'btn-success btn-block'
                                         }
                                         }) }}
                                     <div style="display: none">{{ form_rest(form) }}</div>
@@ -48,7 +50,7 @@
             <div class="col">
                 <section id="wins-today">
                     <header>
-                        <h1>{{ 'Wins today'|trans }} ({{ 'now'|date('l d. F') }})</h1>
+                        <h1>{{ 'Wins today'|trans }}</h1>
                     </header>
 
                     <ol class="list-unstyled">
@@ -67,24 +69,23 @@
 {% endblock %}
 
 {% block javascripts %}
+    {# @see https://www.schemecolor.com/christmas-hex-color-codes.php #}
     {% set colors = [
-        '#eae56f',
-        '#89f26e',
-        '#7de6ef',
-        '#e7706f',
-        ]
-    %}
+        '#165B33',
+        '#146B3A',
+        '#F8B229',
+        '#EA4630',
+        '#BB2528',
+        ] %}
     {% if players|default(false) %}
         {% set segments = players|map(p => {text: p.name, id: p.id}) %}
         {% set winwheel_settings = {
-            constructor_arguments: {
-                numSegments: segments|length,
+            options: {
                 segments: segments,
                 lineWidth: 3
             },
             colors: colors
-            }
-        %}
+            } %}
         <script>
             var winwheel_settings = {{ winwheel_settings|json_encode|raw }}
         </script>

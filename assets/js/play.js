@@ -57,19 +57,22 @@ $(() => {
     audio.play()
   }
 
-  const winWheelArguments = Object.assign(winwheel_settings.constructor_arguments || {}, {
+  const winwheelOptions = winwheel_settings.options
+
+  const winWheelArguments = Object.assign(winwheelOptions || {}, {
     animation: // Note animation properties passed in constructor parameters.
         {
           type: 'spinToStop', // Type of animation.
-          duration: 5, // How long the animation is to take in seconds.
-          spins: 8, // The number of complete 360 degree rotations the wheel is to do.
+          duration: 10, // How long the animation is to take in seconds.
+          spins: 2, // The number of complete 360 degree rotations the wheel is to do.
           callbackFinished: alertPrize,
           callbackSound: playSound
           // soundTrigger: 'pin'
         },
     canvasId: 'wheel',
+    numSegments: winwheelOptions.segments.length,
     pins: {
-      number: 32
+      number: 2 * winwheelOptions.segments.length
     },
     pointerAngle: 90
     // 'pointerGuide': {'display': true, 'strokeStyle': 'red', 'lineWidth': 3},
@@ -91,9 +94,29 @@ $(() => {
   })
   wheel.draw()
 
-  $('#spin-the-wheel').on('click', () => {
+  const spinTheWheel = () => {
+    $select.val('')
+
     wheel.stopAnimation(false)
     wheel.rotationAngle = 0
     wheel.startAnimation()
+  }
+
+  $('#spin-the-wheel').on('click', spinTheWheel)
+
+  $(document).on('keypress', (event) => {
+    const modalOpen = ($('#winModal').data('bs.modal') || {})._isShown
+    switch (event.code) {
+      case 'Space':
+        if (!modalOpen) {
+          spinTheWheel()
+        }
+        break
+      case 'Enter':
+        if (modalOpen && $select.val()) {
+          $('#winModal').find('form').submit()
+        }
+        break
+    }
   })
 })

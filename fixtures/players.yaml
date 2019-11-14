@@ -1,5 +1,5 @@
 App\Entity\Player:
-    player_{1..4}:
+    player_{1..24}:
         name: <name()>
 
 App\Entity\Win:

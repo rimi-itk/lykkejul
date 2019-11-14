@@ -1,19 +1,38 @@
 @import "~bootstrap/scss/bootstrap";
 
-// body {
-//     background: red;
-// }
+body {
+  background: {
+    image: url("../images/104890.jpg");
+  }
+}
+
+form {
+  width: 100%;
+}
+
+#winner-name {
+  font-size: 200%;
+}
+
+#spin-the-wheel {
+  z-index: 1000;
+}
 
 #wins-today {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 2em;
+  top: 1em;
+  background: rgba(255, 255, 255, .5);
+  padding: 1em;
+  border: solid .1em #fff;
+  border-radius: 1em;
 }
 
 #wheel-wrapper {
   position: relative;
   width: 800px;
   height: 800px;
+  margin: 50px;
 
   #pointer {
     position: absolute;
