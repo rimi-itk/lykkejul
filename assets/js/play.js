@@ -11,6 +11,8 @@ const Winwheel = require('../lib/Winwheel')
 
 gsap.registerPlugin(CSSPlugin)
 
+// The lazy programmer hasn't yet found out how to get webpack/encore to copy
+// non-image files to the output folder.
 const taDaPath = require('../audio/tada.mp3.png')
 const tickPath = require('../audio/tick.mp3.png')
 
