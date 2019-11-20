@@ -7,13 +7,13 @@
 
         {% if players|default(false) %}
             <div class="col">
-                <button type="button" class="btn btn-success" id="spin-the-wheel">{{ 'Spin the wheel'|trans }}</button>
+                {#<button type="button" class="btn btn-success" id="spin-the-wheel">{{ 'Spin the wheel'|trans }}</button>#}
 
                 <div id="wheel-wrapper">
-                    <div id="pointer"></div>
+                    <div id="wheel-base"></div>
+                    <div id="pointer" class="spin-the-wheel"></div>
                     <canvas id='wheel'></canvas>
                 </div>
-
 
                 <div id="winModal" class="modal fade" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -32,7 +32,7 @@
                                     {{ form_widget(form.submit, {
                                         label: 'Nå',
                                         attr: {
-                                            class: 'btn-success btn-block'
+                                            class: 'btn-submit'
                                         }
                                         }) }}
                                     <div style="display: none">{{ form_rest(form) }}</div>
@@ -62,6 +62,7 @@
             </div>
         {% endif %}
 
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" id="refresh">{{ 'Refresh'|trans }}</a>
 {% endblock %}
 
 {% block stylesheets %}

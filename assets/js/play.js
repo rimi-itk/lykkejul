@@ -13,8 +13,8 @@ gsap.registerPlugin(CSSPlugin)
 
 // The lazy programmer hasn't yet found out how to get webpack/encore to copy
 // non-image files to the output folder.
-const taDaPath = require('../audio/tada.mp3.png')
-const tickPath = require('../audio/tick.mp3.png')
+const taDaPath = require('../audio/tada.mp3')
+const tickPath = require('../audio/tick.mp3')
 
 // @TODO Do this the right way!
 window.TweenMax = require('gsap').TweenMax
@@ -35,6 +35,8 @@ $(() => {
   const taDa = new Audio(taDaPath)
 
   const alertPrize = () => {
+    $('#pointer').removeClass('wheel-spinning')
+
     taDa.pause()
     taDa.currentTime = 0
     taDa.play()
@@ -102,9 +104,11 @@ $(() => {
     wheel.stopAnimation(false)
     wheel.rotationAngle = 0
     wheel.startAnimation()
+
+    $('#pointer').addClass('wheel-spinning')
   }
 
-  $('#spin-the-wheel').on('click', spinTheWheel)
+  $('.spin-the-wheel').on('click', spinTheWheel)
 
   $(document).on('keypress', (event) => {
     const modalOpen = ($('#winModal').data('bs.modal') || {})._isShown

@@ -73,6 +73,21 @@ Encore
         from: './assets/images',
         to: 'images/[path][name].[ext]'
     })
+
+  .addLoader({
+        test: /\.(mp3)$/,
+        use: [
+            {
+                loader: 'file-loader',
+                options: {
+                    outputPath: 'assets/audio'
+                }
+            }
+        ]
+    })
+    // .configureFilenames({
+    //     audio: 'audio/[name].[ext]'
+    // })
 ;
 
 module.exports = Encore.getWebpackConfig();
