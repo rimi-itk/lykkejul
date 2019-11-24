@@ -10,12 +10,6 @@ docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interact
 open http://$(docker-compose port nginx 80)
 ```
 
-### Loading fixtures
-
-```sh
-docker-compose exec phpfpm bin/console hautelook:fixtures:load
-```
-
 ## Building assets
 
 ```sh

@@ -1,7 +1,0 @@
-App\Entity\Player:
-    player_{1..24}:
-        name: <name()>
-
-App\Entity\Win:
-    win_{1..8}:
-        player: '@player*'
