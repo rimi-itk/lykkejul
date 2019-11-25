@@ -22,7 +22,7 @@ final class Version20191113181200 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE player ADD enabled TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE lykkejul_player ADD enabled TINYINT(1) NOT NULL');
     }
 
     public function down(Schema $schema): void
@@ -30,6 +30,6 @@ final class Version20191113181200 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE player DROP enabled');
+        $this->addSql('ALTER TABLE lykkejul_player DROP enabled');
     }
 }

@@ -9,6 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WinRepository")
+ * @ORM\Table(name="lykkejul_win")
  * @ApiResource(
  *     collectionOperations={"GET"},
  *     itemOperations={"GET"},

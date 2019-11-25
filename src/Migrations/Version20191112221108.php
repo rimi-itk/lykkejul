@@ -22,9 +22,9 @@ final class Version20191112221108 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE win (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', player_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_B0CA3B7699E6F5DF (player_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE player (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', name VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE win ADD CONSTRAINT FK_B0CA3B7699E6F5DF FOREIGN KEY (player_id) REFERENCES player (id)');
+        $this->addSql('CREATE TABLE lykkejul_win (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', player_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_B0CA3B7699E6F5DF (player_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE lykkejul_player (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', name VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE lykkejul_win ADD CONSTRAINT FK_B0CA3B7699E6F5DF FOREIGN KEY (player_id) REFERENCES lykkejul_player (id)');
     }
 
     public function down(Schema $schema): void
@@ -32,8 +32,8 @@ final class Version20191112221108 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE win DROP FOREIGN KEY FK_B0CA3B7699E6F5DF');
-        $this->addSql('DROP TABLE win');
-        $this->addSql('DROP TABLE player');
+        $this->addSql('ALTER TABLE lykkejul_win DROP FOREIGN KEY FK_B0CA3B7699E6F5DF');
+        $this->addSql('DROP TABLE lykkejul_win');
+        $this->addSql('DROP TABLE lykkejul_player');
     }
 }

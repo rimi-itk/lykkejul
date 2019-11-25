@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlayerRepository")
+ * @ORM\Table(name="lykkejul_player")
  * @UniqueEntity("name", message="Name already used")
  * @ApiResource(
  *     collectionOperations={"GET"},
