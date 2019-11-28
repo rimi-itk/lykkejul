@@ -63,6 +63,7 @@
         {% endif %}
 
         <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" id="refresh">{{ 'Refresh'|trans }}</a>
+        <button id="play-music">{{ 'Play music'|trans }}</button>
 {% endblock %}
 
 {% block stylesheets %}

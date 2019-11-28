@@ -15,6 +15,7 @@ gsap.registerPlugin(CSSPlugin)
 // non-image files to the output folder.
 const taDaPath = require('../audio/tada.mp3')
 const tickPath = require('../audio/tick.mp3')
+const backgroundMusicPath = require('../audio/beginning_look_like_christmas.mp3')
 
 // @TODO Do this the right way!
 window.TweenMax = require('gsap').TweenMax
@@ -31,6 +32,12 @@ $(() => {
   const $options = $select.find('option')
   const random = getRandomInt(0, $options.length)
   $options.eq(random).prop('selected', true)
+
+  const backgroundMusic = new Audio(backgroundMusicPath)
+
+  $('#play-music').on('click', () => {
+    backgroundMusic.play()
+  })
 
   const taDa = new Audio(taDaPath)
 
@@ -99,6 +106,8 @@ $(() => {
   wheel.draw()
 
   const spinTheWheel = () => {
+    backgroundMusic.pause()
+
     $select.val('')
 
     wheel.stopAnimation(false)

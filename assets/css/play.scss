@@ -97,6 +97,24 @@ form {
   }
 }
 
+#play-music {
+  text-align: left;
+  text-indent: -24em;
+  overflow: hidden;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 64px;
+  height: 64px;
+  outline: none;
+  border: none;
+  background: {
+    color: transparent;
+    image: url("../images/bell_musical_instrument_alert_alarm_christmas_music-128.png");
+    size: 100% 100%;
+  }
+}
+
 .btn-submit {
   text-align: left;
   text-indent: -24em;
