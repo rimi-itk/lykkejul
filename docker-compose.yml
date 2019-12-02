@@ -37,6 +37,8 @@ services:
       - mariadb
     volumes:
       - .:/app:delegated
+      - vendor-cache:/app/vendor
+      - $PWD/vendor:/app-vendor
 
   nginx:
     image: nginx:latest
@@ -71,3 +73,6 @@ services:
     ports:
       - "1025"
       - "8025"
+
+volumes:
+  vendor-cache:
