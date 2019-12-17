@@ -11,11 +11,13 @@ const Winwheel = require('../lib/Winwheel')
 
 gsap.registerPlugin(CSSPlugin)
 
-// The lazy programmer hasn't yet found out how to get webpack/encore to copy
-// non-image files to the output folder.
 const taDaPath = require('../audio/tada.mp3')
 const tickPath = require('../audio/tick.mp3')
-const backgroundMusicPath = require('../audio/beginning_look_like_christmas.mp3')
+let backgroundMusicPath = require('../audio/beginning_look_like_christmas.mp3')
+const day = new Date().getDate()
+if (18 === day) {
+  backgroundMusicPath = require('../audio/Hr_Mortensens_fødselsdag.mp3')
+}
 
 // @TODO Do this the right way!
 window.TweenMax = require('gsap').TweenMax
