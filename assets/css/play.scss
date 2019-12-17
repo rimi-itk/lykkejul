@@ -115,6 +115,24 @@ form {
   }
 }
 
+#grand-prize {
+  text-align: left;
+  text-indent: -24em;
+  overflow: hidden;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 600 / 5 * 1px;
+  height: 569 / 5 * 1px;
+  outline: none;
+  border: none;
+  background: {
+    color: transparent;
+    image: url("../images/santa_claus_PNG38481.png");
+    size: 100% 100%;
+  }
+}
+
 .btn-submit {
   text-align: left;
   text-indent: -24em;

@@ -30,6 +30,10 @@ const getRandomInt = (min, max) => {
 }
 
 $(() => {
+  if (20 !== day) {
+    $('#grand-prize').hide()
+  }
+
   const $select = $('#play_player')
   const $options = $select.find('option')
   const random = getRandomInt(0, $options.length)

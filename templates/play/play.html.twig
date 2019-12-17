@@ -64,6 +64,9 @@
 
         <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" id="refresh">{{ 'Refresh'|trans }}</a>
         <button id="play-music">{{ 'Play music'|trans }}</button>
+
+        {% set grand_prize_url = path('play_play', {all: null == app.request.get('all') ? 'Mikkel' : true}) %}
+        <a id="grand-prize" href="{{ grand_prize_url }}">{{ 'Santa Claus'|trans }}</a>
 {% endblock %}
 
 {% block stylesheets %}
