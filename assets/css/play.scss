@@ -31,17 +31,11 @@ form {
   border-radius: 1em;
 }
 
-html, body,
-body > .row {
-  height: 100%;
-}
-
 #wheel-wrapper {
   position: relative;
-  height: 80%;
-  // The width will be set by JavaScript.
-  top: 10%;
-  left: 5%;
+  width: 800px;
+  height: 800px;
+  margin: 50px;
 
   #pointer {
     position: absolute;

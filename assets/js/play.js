@@ -92,7 +92,6 @@ $(() => {
   // Make wheel canvas fill wrapper.
   const $wheel = $('#wheel')
   const $wrapper = $wheel.parent()
-  $wrapper.css({ width: $wrapper.height() + 'px' })
   $wheel.attr('width', $wrapper.width() + 'px').attr('height', $wrapper.height() + 'px')
 
   const wheel = new Winwheel(winWheelArguments)
