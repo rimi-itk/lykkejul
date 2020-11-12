@@ -1,0 +1,153 @@
+@import "~bootstrap/scss/bootstrap";
+
+body {
+  background: {
+    image:
+      url("./images/snow-transparent.gif"),
+
+      url("./images/104890.jpg");
+  }
+}
+
+form {
+  width: 100%;
+}
+
+#winner-name {
+  font-size: 200%;
+}
+
+#spin-the-wheel {
+  z-index: 1000;
+}
+
+#wins-today {
+  position: absolute;
+  right: 2em;
+  top: 1em;
+  background: rgba(255, 255, 255, .5);
+  padding: 1em;
+  border: solid .1em #fff;
+  border-radius: 1em;
+}
+
+#wheel-wrapper {
+  position: relative;
+  width: 800px;
+  height: 800px;
+  margin: 50px;
+
+  #pointer {
+    position: absolute;
+    width: 497px * .3;
+    height: 294px * .3;
+    background: {
+      image: url("./images/spruce.png");
+      size: 100% 100%;
+    }
+
+    right: -120px;
+    top: 50%;
+    margin-top: -10px;
+
+    &.wheel-spinning {
+      animation: {
+        name: wiggle;
+        duration: 500ms;
+        iteration-count: infinite;
+        timing-function: ease-in-out;
+      }
+    }
+  }
+
+  #wheel-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    // background: blue;
+    border-radius: 50%;
+
+    box-shadow: 0px -5px 8px 5px rgba(255, 255, 255, .75);
+  }
+}
+
+@keyframes wiggle {
+  0% {transform: rotate(0deg);}
+  25% {transform: rotate(-20deg);}
+  50% {transform: rotate(5deg);}
+  // 75% {transform: rotate(-5deg);}
+  100% {transform: rotate(-5deg);}
+}
+
+#refresh {
+  text-align: left;
+  text-indent: -24em;
+  overflow: hidden;
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 60px;
+  height: 60px;
+  background: {
+    image: url("./images/julehjerte.png");
+    size: 100% 100%;
+  }
+}
+
+#play-music {
+  text-align: left;
+  text-indent: -24em;
+  overflow: hidden;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 64px;
+  height: 64px;
+  outline: none;
+  border: none;
+  background: {
+    color: transparent;
+    image: url("./images/bell_musical_instrument_alert_alarm_christmas_music-128.png");
+    size: 100% 100%;
+  }
+}
+
+#grand-prize {
+  text-align: left;
+  text-indent: -24em;
+  overflow: hidden;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 600 / 5 * 1px;
+  height: 569 / 5 * 1px;
+  outline: none;
+  border: none;
+  background: {
+    color: transparent;
+    image: url("./images/santa_claus_PNG38481.png");
+    size: 100% 100%;
+  }
+}
+
+.btn-submit {
+  text-align: left;
+  text-indent: -24em;
+  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+  height: 100px;
+  background: {
+    image: url("./images/15901_christmas-present-transparent-background.png");
+    size: auto 100%;
+    repeat: no-repeat;
+    position: center;
+  }
+}
+
+button:focus {
+  box-shadow: none !important;
+}

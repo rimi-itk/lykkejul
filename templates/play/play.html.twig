@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Spin the wheel!'|trans %}
+
+{% block body %}
+    <div class="row">
+
+        {% if players|default(false) %}
+            <div class="col">
+                {#<button type="button" class="btn btn-success" id="spin-the-wheel">{{ 'Spin the wheel'|trans }}</button>#}
+
+                <div id="wheel-wrapper">
+                    <div id="wheel-base"></div>
+                    <div id="pointer" class="spin-the-wheel"></div>
+                    <canvas id='wheel'></canvas>
+                </div>
+
+                <div id="winModal" class="modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ messages.the_winner_is|default('The winner is')|trans }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="winner-name"></p>
+                            </div>
+                            <div class="modal-footer">
+                                {{ form_start(form) }}
+                                    {{ form_widget(form.submit, {
+                                        label: 'Nå',
+                                        attr: {
+                                            class: 'btn btn-submit'
+                                        }
+                                        }) }}
+                                    <div style="display: none">{{ form_rest(form) }}</div>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">{{ 'Game over'|trans }}</div>
+        {% endif %}
+
+        {% if wins_today|default(false) %}
+            <div class="col">
+                <section id="wins-today">
+                    <header>
+                        <h1>{{ messages.wins_today|default('Wins today')|trans }}</h1>
+                    </header>
+
+                    <ol class="list-unstyled">
+                        {% for win in wins_today %}
+                            <li>{{ win.player.name }}</li>
+                        {% endfor %}
+                    </ol>
+                </section>
+            </div>
+        {% endif %}
+
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" id="refresh">{{ 'Refresh'|trans }}</a>
+        <button id="play-music">{{ 'Play music'|trans }}</button>
+
+        {% set grand_prize_url = path('play_play', {all: null == app.request.get('all') ? 'Mikkel' : true}) %}
+        <a id="grand-prize" href="{{ grand_prize_url }}">{{ 'Santa Claus'|trans }}</a>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('play') }}
+{% endblock %}
+
+{% block javascripts %}
+    {# @see https://www.schemecolor.com/christmas-hex-color-codes.php #}
+    {% set colors = [
+        'rgb(255,   0,   0, .7)',
+        'rgb(255, 120, 120, .7)',
+        'rgb(255, 255, 255, .7)',
+        'rgb(116, 214, 128, .7)',
+        'rgb( 55, 139,  41, .7)',
+        ] %}
+    {% if players|default(false) %}
+        {% set segments = players|map(p => {text: p.name, id: p.id}) %}
+        {% set winwheel_settings = {
+            options: {
+                segments: segments,
+                lineWidth: 3
+            },
+            colors: colors
+            } %}
+        <script>
+            var winwheel_settings = {{ winwheel_settings|json_encode|raw }}
+        </script>
+        {{ encore_entry_script_tags('play') }}
+    {% endif %}
+{% endblock %}
