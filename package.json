@@ -9,7 +9,7 @@
         "eslint-plugin-node": "^10.0.0",
         "eslint-plugin-promise": "^4.2.1",
         "eslint-plugin-standard": "^4.0.1",
-        "gsap": "^3.0.1",
+        "gsap": "^3.6.0",
         "jquery": "^3.4.1",
         "node-sass": "^4.13.0",
         "popper.js": "^1.16.0",
