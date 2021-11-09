@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\WinRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass=WinRepository::class)
@@ -15,8 +16,7 @@ class Win
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="guid")
+     * @ORM\Column(type="uuid", unique=true)
      */
     private $id;
 
@@ -30,6 +30,11 @@ class Win
      * @ORM\Column(type="boolean")
      */
     private $prizeCollected = false;
+
+    public function __construct()
+    {
+        $this->id = Uuid::v4();
+    }
 
     public function getId(): ?string
     {

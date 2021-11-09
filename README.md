@@ -4,17 +4,25 @@
 
 ```sh
 docker-compose up --detach
-symfony composer install
-symfony console doctrine:migrations:migrate --no-interaction
+composer install
+bin/console doctrine:migrations:migrate --no-interaction
 
 symfony local:server:start
+```
+
+## Production
+
+```sh
+docker-compose --env-file .env.docker.local -f docker-compose.server.yml up --detach
+docker-compose --env-file .env.docker.local -f docker-compose.server.yml exec phpfpm composer install --no-dev --classmap-authoritative
+docker-compose --env-file .env.docker.local -f docker-compose.server.yml exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 ```
 
 ## Building assets
 
 ```sh
-yarn install
-yarn build
+docker run --volume ${PWD}:/app --workdir /app node:16 yarn install
+docker run --volume ${PWD}:/app --workdir /app node:16 yarn build
 ```
 
 ## Administration
@@ -22,7 +30,7 @@ yarn build
 Run
 
 ```sh
-symfony console security:encode-password
+bin/console security:hash-password
 ```
 
 to encode the admin password and set it in `.env.local`:
