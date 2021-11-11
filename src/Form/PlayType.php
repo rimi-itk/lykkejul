@@ -15,7 +15,7 @@ class PlayType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($options['players'] as $player) {
-            assert($player instanceof Player);
+            \assert($player instanceof Player);
             $playerChoices[$player->getId()] = $player;
         }
 

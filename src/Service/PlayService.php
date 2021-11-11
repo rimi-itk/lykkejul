@@ -1,33 +1,23 @@
 <?php
 
-
 namespace App\Service;
-
 
 use App\Repository\WinRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PlayService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var WinRepository */
-    private $winRepository;
-
-    /** @var array */
-    private $playConfiguration;
-
-    public function __construct(EntityManagerInterface $entityManager, WinRepository $winRepository, array $playConfiguration)
-    {
-        $this->entityManager = $entityManager;
-        $this->winRepository = $winRepository;
-        $this->playConfiguration = $playConfiguration;
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private WinRepository $winRepository,
+        private array $playConfiguration
+    ) {
     }
 
     public function getActivePlayers(int $maxNumberOfWins = null)
     {
-        $query = $this->entityManager->createQuery(<<<'DQL'
+        $query = $this->entityManager->createQuery(
+            <<<'DQL'
 SELECT player
   FROM App\Entity\Player player
  WHERE player.enabled = true
@@ -54,5 +44,4 @@ DQL
     {
         return $this->winRepository->findByDate($date);
     }
-
 }
