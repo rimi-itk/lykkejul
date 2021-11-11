@@ -1,23 +1,26 @@
 /* global winwheel_settings Audio */
 
-import { gsap } from 'gsap'
-import { CSSPlugin } from 'gsap/CSSPlugin.js'
+import { gsap, CSSPlugin } from "gsap/all";
 
 require('./play.scss')
 
 const $ = require('jquery')
-require('bootstrap')
+
+const bootstrap = require('bootstrap')
+import { Modal } from 'bootstrap';
+const modal = new bootstrap.Modal(document.getElementById('winModal'), {})
 const Winwheel = require('./lib/Winwheel')
 
 gsap.registerPlugin(CSSPlugin)
 
-const taDaPath = require('./audio/tada.mp3')
-const tickPath = require('./audio/tick.mp3')
-let backgroundMusicPath = require('./audio/beginning_look_like_christmas.mp3')
+import taDaPath from './audio/tada.mp3'
+import tickPath from './audio/tick.mp3'
+import backgroundMusicPathDefault from './audio/beginning_look_like_christmas.mp3'
+import backgroundMusicPathHrMortensen from './audio/Hr_Mortensens_fødselsdag.mp3'
+
 const day = new Date().getDate()
-if (18 === day) {
-  backgroundMusicPath = require('./audio/Hr_Mortensens_fødselsdag.mp3')
-}
+
+const backgroundMusicPath = 18 === day ? backgroundMusicPathHrMortensen : backgroundMusicPathDefault
 
 // @TODO Do this the right way!
 window.TweenMax = require('gsap').TweenMax
@@ -60,7 +63,7 @@ $(() => {
 
     $select.val(segment.id)
 
-    $('#winModal').modal({})
+    modal.show()
   }
 
   const audio = new Audio(tickPath)
@@ -126,7 +129,7 @@ $(() => {
   $('.spin-the-wheel').on('click', spinTheWheel)
 
   $(document).on('keypress', (event) => {
-    const modalOpen = ($('#winModal').data('bs.modal') || {})._isShown
+    const modalOpen = modal._isShown
     switch (event.code) {
       case 'Space':
         if (!modalOpen) {

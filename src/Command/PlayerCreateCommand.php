@@ -11,18 +11,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PlayerCreateCommand extends Command
 {
     protected static $defaultName = 'app:player:create';
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private ValidatorInterface $validator)
     {
         parent::__construct();
-        $this->entityManager = $entityManager;
     }
 
     protected function configure()
@@ -41,6 +39,10 @@ class PlayerCreateCommand extends Command
         foreach ($names as $name) {
             $player = new Player();
             $player->setName($name);
+            $errors = $this->validator->validate($player);
+            if (count($errors) > 0) {
+                throw new ValidationFailedException((string)$errors, $errors);
+            }
             $this->entityManager->persist($player);
             $io->success(sprintf('Player %s created (id: %s)', $player->getName(), $player->getId()));
         }
