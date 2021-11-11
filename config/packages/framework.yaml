@@ -17,6 +17,9 @@ framework:
     php_errors:
         log: true
 
+    # @see https://symfony.com/doc/current/deployment/proxies.html#but-what-if-the-ip-of-my-reverse-proxy-changes-constantly
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+
 when@test:
     framework:
         test: true
