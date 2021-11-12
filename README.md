@@ -16,6 +16,8 @@ symfony local:server:start
 docker-compose --env-file .env.docker.local --file docker-compose.server.yml up --detach
 docker-compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm composer install --no-dev --classmap-authoritative
 docker-compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm bin/console doctrine:migrations:migrate --no-interaction
+# Edit .env.local
+docker-compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm composer dump-env
 ```
 
 ## Building assets
