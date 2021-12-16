@@ -89,6 +89,7 @@
             colors: colors
             } %}
         <script>
+            var play_options = {{ play_options|json_encode|raw }}
             var winwheel_settings = {{ winwheel_settings|json_encode|raw }}
         </script>
         {{ encore_entry_script_tags('play') }}

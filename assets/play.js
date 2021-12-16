@@ -22,6 +22,8 @@ const day = new Date().getDate()
 
 const backgroundMusicPath = 18 === day ? backgroundMusicPathHrMortensen : backgroundMusicPathDefault
 
+const playOptions = play_options
+
 // @TODO Do this the right way!
 window.TweenMax = require('gsap').TweenMax
 
@@ -33,7 +35,7 @@ const getRandomInt = (min, max) => {
 }
 
 $(() => {
-  if (20 !== day) {
+  if (playOptions.grand_prize_day !== day) {
     $('#grand-prize').hide()
   }
 

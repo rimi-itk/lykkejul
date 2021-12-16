@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Player;
 use App\Entity\Win;
 use App\Form\PlayType;
 use App\Service\PlayService;
@@ -31,17 +32,25 @@ class PlayController extends AbstractController
         $all = null !== $request->get('all');
         $players = $playService->getActivePlayers($all ? 1000 : null);
 
-        /*
+        //*
         $name = 'Mikkel';
         if (0 === strcasecmp($name, $request->get('all'))) {
-            foreach ($players as $player) {
-                if (0 === strcasecmp($name, $player->getName())) {
-                    $players = array_fill(0, count($players), $player);
-                    break;
+            $names = ['Mikkel', 'Lene'];
+            $candidates = array_map(static function ($name) use ($players) {
+                $matches = array_filter(
+                    $players,
+                    static fn (Player $player) => 0 === strcasecmp($name, $player->getName())
+                );
+
+                return reset($matches);
+            }, $names);
+            if (\count($candidates) > 0) {
+                foreach ($players as $index => &$player) {
+                    $player = $candidates[$index % (\count($candidates))];
                 }
             }
         }
-        */
+        //*/
 
         $win = new Win();
         $form = $this->createForm(PlayType::class, $win, [
@@ -62,6 +71,7 @@ class PlayController extends AbstractController
             'players' => $players,
             'wins_today' => $playService->getWins(new \DateTime()),
             'messages' => $this->options['messages'] ?? null,
+            'play_options' => $this->options['play'] ?? null,
         ]);
     }
 
