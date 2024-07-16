@@ -3,28 +3,31 @@
 ## Development
 
 ```sh
-docker-compose up --detach
-composer install
-bin/console doctrine:migrations:migrate --no-interaction
-
-symfony local:server:start
+docker compose up --detach
+docker compose exec phpfpm composer install
+docker compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
+open "http://$(docker compose port nginx 8080)"
 ```
 
 ## Production
 
 ```sh
-docker-compose --env-file .env.docker.local --file docker-compose.server.yml up --detach
-docker-compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm composer install --no-dev --classmap-authoritative
-docker-compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm bin/console doctrine:migrations:migrate --no-interaction
+# Build assets
+docker compose --env-file .env.docker.local --file docker-compose.server.yml run node yarn --cwd /app install
+docker compose --env-file .env.docker.local --file docker-compose.server.yml run node yarn --cwd /app build
+# Start the show
+docker compose --env-file .env.docker.local --file docker-compose.server.yml up --detach
+docker compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm composer install --no-dev --classmap-authoritative
+docker compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm bin/console doctrine:migrations:migrate --no-interaction
 # Edit .env.local
-docker-compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm composer dump-env
+docker compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm composer dump-env
 ```
 
 ## Building assets
 
 ```sh
-docker run --volume ${PWD}:/app --workdir /app node:16 yarn install
-docker run --volume ${PWD}:/app --workdir /app node:16 yarn build
+docker compose run node yarn --cwd /app install
+docker compose run node yarn --cwd /app build
 ```
 
 ## Administration
@@ -32,24 +35,27 @@ docker run --volume ${PWD}:/app --workdir /app node:16 yarn build
 Run
 
 ```sh
-bin/console security:hash-password
+docker compose exec phpfpm bin/console security:hash-password
 ```
 
 to encode the admin password and set it in `.env.local`:
 
-```
-ADMIN_PASSWORD='$argon2id…'
+```dotenv
+ADMIN_PASSWORD='$2y$1…'
 ```
 
-Open the admin interface at
-[https://127.0.0.1:8000/admin](https://127.0.0.1:8000/admin).
+Open the admin interface:
+
+```sh
+open "http://$(docker compose port nginx 8080)/admin"
+```
 
 ## Create players
 
 ```sh
-symfony console app:player:create --help
+docker compose exec phpfpm bin/console app:player:create --help
 ```
 
 ```sh
-symfony console app:player:create {1..90}
+docker compose exec phpfpm bin/console app:player:create {1..90}
 ```
