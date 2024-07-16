@@ -2,7 +2,8 @@
 
 ## Development
 
-```sh
+``` shell name=development
+docker compose pull
 docker compose up --detach
 docker compose exec phpfpm composer install
 docker compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
@@ -11,21 +12,23 @@ open "http://$(docker compose port nginx 8080)"
 
 ## Production
 
-```sh
+``` shell
+docker compose --env-file .env.docker.local --file docker-compose.server.yml pull
+
 # Build assets
 docker compose --env-file .env.docker.local --file docker-compose.server.yml run node yarn --cwd /app install
 docker compose --env-file .env.docker.local --file docker-compose.server.yml run node yarn --cwd /app build
+
 # Start the show
 docker compose --env-file .env.docker.local --file docker-compose.server.yml up --detach
-docker compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm composer install --no-dev --classmap-authoritative
-docker compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm bin/console doctrine:migrations:migrate --no-interaction
-# Edit .env.local
-docker compose --env-file .env.docker.local --file docker-compose.server.yml exec --user deploy phpfpm composer dump-env
+docker compose --env-file .env.docker.local --file docker-compose.server.yml up --detach
+docker compose --env-file .env.docker.local --file docker-compose.server.yml exec phpfpm composer install --no-dev --classmap-authoritative
+docker compose --env-file .env.docker.local --file docker-compose.server.yml exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 ```
 
 ## Building assets
 
-```sh
+``` shell name=assets-build
 docker compose run node yarn --cwd /app install
 docker compose run node yarn --cwd /app build
 ```
@@ -34,7 +37,7 @@ docker compose run node yarn --cwd /app build
 
 Run
 
-```sh
+``` shell
 docker compose exec phpfpm bin/console security:hash-password
 ```
 
@@ -46,16 +49,16 @@ ADMIN_PASSWORD='$2y$1…'
 
 Open the admin interface:
 
-```sh
+``` shell
 open "http://$(docker compose port nginx 8080)/admin"
 ```
 
 ## Create players
 
-```sh
+``` shell
 docker compose exec phpfpm bin/console app:player:create --help
 ```
 
-```sh
+``` shell
 docker compose exec phpfpm bin/console app:player:create {1..90}
 ```
