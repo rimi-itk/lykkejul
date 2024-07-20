@@ -10,11 +10,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 
 class WinCrudController extends AbstractCrudController
 {
+    #[\Override]
     public static function getEntityFqcn(): string
     {
         return Win::class;
     }
 
+    #[\Override]
     public function configureFields(string $pageName): iterable
     {
         return [

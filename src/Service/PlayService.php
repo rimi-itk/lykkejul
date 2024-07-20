@@ -4,14 +4,16 @@ namespace App\Service;
 
 use App\Repository\WinRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlayService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private WinRepository $winRepository,
-        private array $playConfiguration
+        private readonly EntityManagerInterface $entityManager,
+        private readonly WinRepository $winRepository,
+        private readonly array $options
     ) {
+        $this->resolveOptions();
     }
 
     public function getActivePlayers(int $maxNumberOfWins = null)
@@ -32,7 +34,7 @@ DQL
         );
 
         $players = $query->execute([
-            'max_number_of_wins' => $maxNumberOfWins ?? $this->playConfiguration['max_number_of_wins'],
+            'max_number_of_wins' => $maxNumberOfWins ?? $this->options['max_number_of_wins'],
         ]);
 
         shuffle($players);
@@ -44,4 +46,12 @@ DQL
     {
         return $this->winRepository->findByDate($date);
     }
+
+    private function resolveOptions(): void {
+        (new OptionsResolver())
+            ->setRequired('max_number_of_wins')
+            ->setAllowedTypes('max_number_of_wins', 'int')
+            ->resolve($this->options);
+    }
+
 }

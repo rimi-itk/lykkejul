@@ -11,34 +11,24 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=PlayerRepository::class)
- * @UniqueEntity("name")
- */
-class Player
+#[ORM\Entity(repositoryClass: PlayerRepository::class)]
+#[UniqueEntity('name')]
+class Player implements \Stringable
 {
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true)]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private $name;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $enabled = true;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Win::class, mappedBy="player", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Win::class, mappedBy: 'player', orphanRemoval: true)]
     private $wins;
 
     public function __construct()
@@ -106,7 +96,8 @@ class Player
         return $this;
     }
 
-    public function __toString()
+    #[\Override]
+    public function __toString(): string
     {
         return $this->getName() ?? static::class;
     }

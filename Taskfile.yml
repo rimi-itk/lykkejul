@@ -1,0 +1,85 @@
+version: '3'
+
+# https://taskfile.dev/usage/#env-files
+dotenv: ['.env.local', '.env']
+
+vars:
+  DOCKER_COMPOSE: '{{ .TASK_DOCKER_COMPOSE | default "docker compose" }}'
+
+tasks:
+  install:
+    cmds:
+      - task: up
+      - task: composer
+        vars:
+          ARGS: install
+
+      - task: console
+        vars:
+          ARGS: doctrine:migrations:migrate --no-interaction
+
+      - task: site:open
+
+  up:
+    cmds:
+      - task: compose
+        vars:
+          ARGS: pull
+
+      - task: compose
+        vars:
+          ARGS: up --detach
+
+  composer:
+    cmds:
+      - task: compose
+        vars:
+          ARGS: exec phpfpm composer {{ .ARGS }} {{ .CLI_ARGS }}
+
+  compose:
+    # internal: true
+    cmds:
+      - '{{ .DOCKER_COMPOSE }} {{ .ARGS }}'
+
+  dev:coding-standards:markdown:
+    cmds:
+      - docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint --ignore node_modules --ignore vendor --ignore var '**/*.md' --fix
+      - docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint --ignore node_modules --ignore vendor --ignore var '**/*.md'
+
+  dev:coding-standards:php:
+    cmds:
+      - task: compose
+        vars:
+          ARGS: exec phpfpm vendor/bin/php-cs-fixer fix
+
+      - task: compose
+        vars:
+          ARGS: exec phpfpm vendor/bin/php-cs-fixer
+
+  dev:coding-standards:twig:
+    cmds:
+      - task: compose
+        vars:
+          ARGS: exec phpfpm vendor/bin/twig-cs-fixer lint templates --fix
+
+      - task: compose
+        vars:
+          ARGS: exec phpfpm vendor/bin/twig-cs-fixer lint templates
+
+  dev:coding-standards:
+    cmds:
+      - task: dev:coding-standards:markdown
+      - task: dev:coding-standards:php
+      - task: dev:coding-standards:twig
+
+  dev:code-analysis:php:
+    cmds:
+      - task: compose
+        vars:
+          ARGS: exec phpfpm vendor/bin/phpstan analyse --configuration=phpstan.neon
+
+  dev:xdebug:
+    cmds:
+      # @todo Can we pass the environments variables to the `up` task?
+      - PHP_XDEBUG_MODE=debug PHP_XDEBUG_WITH_REQUEST=yes {{ .DOCKER_COMPOSE }} up
+      - task: up

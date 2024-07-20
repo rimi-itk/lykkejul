@@ -15,22 +15,29 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
-    /**
-     * @Route("/admin", name="admin")
-     */
+    public function __construct(
+        private readonly AdminUrlGenerator $adminUrlGenerator
+    )
+    {
+    }
+
+    #[\Override]
+    #[Route(path: '/admin', name: 'admin')]
     public function index(): Response
     {
-        $routeBuilder = $this->get(AdminUrlGenerator::class);
+        $routeBuilder = $this->adminUrlGenerator;
 
         return $this->redirect($routeBuilder->setController(PlayerCrudController::class)->generateUrl());
     }
 
+    #[\Override]
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
             ->setTitle($this->getParameter('site_name'));
     }
 
+    #[\Override]
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToCrud('Players', 'icon class', Player::class);
@@ -38,6 +45,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoRoute('Play', 'icon class', 'play_play');
     }
 
+    #[\Override]
     public function configureUserMenu(UserInterface $user): UserMenu
     {
         return parent::configureUserMenu($user)

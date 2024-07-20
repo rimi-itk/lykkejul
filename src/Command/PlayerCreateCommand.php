@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Player;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,15 +13,18 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+#[AsCommand(name: 'app:player:create', description: 'Create a new player')]
 class PlayerCreateCommand extends Command
 {
-    protected static $defaultName = 'app:player:create';
-
-    public function __construct(private EntityManagerInterface $entityManager, private ValidatorInterface $validator)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ValidatorInterface $validator
+    )
     {
         parent::__construct();
     }
 
+    #[\Override]
     protected function configure()
     {
         $this
@@ -29,6 +33,7 @@ class PlayerCreateCommand extends Command
         ;
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
