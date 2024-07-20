@@ -4,10 +4,12 @@
         <meta charset="UTF-8">
         <title>{% block title %}{{ site.name }}{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+            {{ encore_entry_link_tags('app') }}
     </head>
     <body>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
+            {{ encore_entry_script_tags('app') }}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
     </body>
 </html>
