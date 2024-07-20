@@ -40,9 +40,9 @@ class DashboardController extends AbstractDashboardController
     #[\Override]
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('Players', 'icon class', Player::class);
-        yield MenuItem::linkToCrud('Wins', 'icon class', Win::class);
-        yield MenuItem::linktoRoute('Play', 'icon class', 'play_play');
+        yield MenuItem::linkToCrud('Players', 'fa fa-users', Player::class);
+        yield MenuItem::linkToCrud('Wins', 'fa fa-medal', Win::class);
+        yield MenuItem::linkToUrl('Play', 'fa fa-dharmachakra', $this->generateUrl('play_play'));
     }
 
     #[\Override]
