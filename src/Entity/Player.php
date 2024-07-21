@@ -19,17 +19,20 @@ class Player implements \Stringable
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    private $id;
+    private Uuid $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
-    private $name;
+    private string $name;
 
     #[ORM\Column(type: 'boolean')]
-    private $enabled = true;
+    private bool $enabled = true;
 
+    /**
+     * @var Collection<int, Win>
+     */
     #[ORM\OneToMany(targetEntity: Win::class, mappedBy: 'player', orphanRemoval: true)]
-    private $wins;
+    private Collection $wins;
 
     public function __construct()
     {
@@ -67,7 +70,7 @@ class Player implements \Stringable
     }
 
     /**
-     * @return Collection|Win[]
+     * @return Collection<int, Win>
      */
     public function getWins(): Collection
     {

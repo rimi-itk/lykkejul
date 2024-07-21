@@ -18,11 +18,12 @@ import tickPath from './audio/tick.mp3'
 import backgroundMusicPathDefault from './audio/beginning_look_like_christmas.mp3'
 import backgroundMusicPathHrMortensen from './audio/Hr_Mortensens_fødselsdag.mp3'
 
-const day = new Date().getDate()
+const playOptions = play_options
+
+const now = play_options.date ? new Date(play_options.date) : new Date()
+const day = now.getDate()
 
 const backgroundMusicPath = 18 === day ? backgroundMusicPathHrMortensen : backgroundMusicPathDefault
-
-const playOptions = play_options
 
 // @TODO Do this the right way!
 window.TweenMax = require('gsap').TweenMax

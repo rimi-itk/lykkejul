@@ -50,11 +50,11 @@ tasks:
     cmds:
       - task: compose
         vars:
-          ARGS: exec phpfpm vendor/bin/php-cs-fixer fix
+          ARGS: exec phpfpm vendor/bin/php-cs-fixer --allow-risky=yes fix
 
       - task: compose
         vars:
-          ARGS: exec phpfpm vendor/bin/php-cs-fixer
+          ARGS: exec phpfpm vendor/bin/php-cs-fixer --allow-risky=yes check
 
   dev:coding-standards:twig:
     cmds:
@@ -76,7 +76,7 @@ tasks:
     cmds:
       - task: compose
         vars:
-          ARGS: exec phpfpm vendor/bin/phpstan analyse --configuration=phpstan.neon
+          ARGS: exec phpfpm vendor/bin/phpstan analyse --configuration=phpstan.dist.neon
 
   dev:xdebug:
     cmds:

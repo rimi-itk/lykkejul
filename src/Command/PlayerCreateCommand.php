@@ -19,8 +19,7 @@ class PlayerCreateCommand extends Command
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ValidatorInterface $validator
-    )
-    {
+    ) {
         parent::__construct();
     }
 

@@ -17,8 +17,7 @@ class DashboardController extends AbstractDashboardController
 {
     public function __construct(
         private readonly AdminUrlGenerator $adminUrlGenerator
-    )
-    {
+    ) {
     }
 
     #[\Override]
@@ -33,8 +32,11 @@ class DashboardController extends AbstractDashboardController
     #[\Override]
     public function configureDashboard(): Dashboard
     {
+        $title = $this->getParameter('site_name');
+        \assert(\is_string($title));
+
         return Dashboard::new()
-            ->setTitle($this->getParameter('site_name'));
+            ->setTitle($title);
     }
 
     #[\Override]

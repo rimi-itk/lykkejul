@@ -14,14 +14,14 @@ class Win
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    private $id;
+    private ?Uuid $id;
 
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Player::class, inversedBy: 'wins')]
-    private $player;
+    private ?Player $player;
 
     #[ORM\Column(type: 'boolean')]
-    private $prizeCollected = false;
+    private bool $prizeCollected = false;
 
     public function __construct()
     {

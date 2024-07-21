@@ -16,21 +16,20 @@ open "http://$(docker compose port nginx 8080)"
 docker compose --env-file .env.docker.local --file docker-compose.server.yml pull
 
 # Build assets
-docker compose --env-file .env.docker.local --file docker-compose.server.yml run node yarn --cwd /app install
-docker compose --env-file .env.docker.local --file docker-compose.server.yml run node yarn --cwd /app build
+docker compose run --rm node npm install
+docker compose run --rm node npm run build
 
 # Start the show
 docker compose --env-file .env.docker.local --file docker-compose.server.yml up --detach
-docker compose --env-file .env.docker.local --file docker-compose.server.yml up --detach
-docker compose --env-file .env.docker.local --file docker-compose.server.yml exec phpfpm composer install --no-dev --classmap-authoritative
+docker compose --env-file .env.docker.local --file docker-compose.server.yml exec phpfpm composer install --no-dev
 docker compose --env-file .env.docker.local --file docker-compose.server.yml exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 ```
 
 ## Building assets
 
 ``` shell name=assets-build
-docker compose run node yarn --cwd /app install
-docker compose run node yarn --cwd /app build
+docker compose run --rm node npm install
+docker compose run --rm node npm run build
 ```
 
 ## Administration
@@ -61,4 +60,16 @@ docker compose exec phpfpm bin/console app:player:create --help
 
 ``` shell
 docker compose exec phpfpm bin/console app:player:create {1..90}
+```
+
+## Coding standards
+
+``` shell
+task dev:coding-standards
+```
+
+## Code analysis
+
+``` shell
+task dev:code-analysis:php
 ```
