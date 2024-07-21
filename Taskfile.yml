@@ -5,6 +5,7 @@ dotenv: ['.env.local', '.env']
 
 vars:
   DOCKER_COMPOSE: '{{ .TASK_DOCKER_COMPOSE | default "docker compose" }}'
+  DOCKER_COMPOSE_USER: '{{ .TASK_DOCKER_COMPOSE_USER | default "" }}'
 
 tasks:
   install:
@@ -13,7 +14,13 @@ tasks:
       - task: composer
         vars:
           ARGS: install
+      - task: npm
+        vars:
+          ARGS: install
 
+  run:
+    cmds:
+      - task: install
       - task: console
         vars:
           ARGS: doctrine:migrations:migrate --no-interaction
@@ -34,37 +41,73 @@ tasks:
     cmds:
       - task: compose
         vars:
-          ARGS: exec phpfpm composer {{ .ARGS }} {{ .CLI_ARGS }}
+          ARGS: exec {{ .DOCKER_COMPOSE_USER }} phpfpm composer {{ .ARGS }} {{ .CLI_ARGS }}
+
+  console:
+    cmds:
+      - task: compose
+        vars:
+          ARGS: exec {{ .DOCKER_COMPOSE_USER }} phpfpm bin/console {{ .ARGS }} {{ .CLI_ARGS }}
+
+  npm:
+    cmds:
+      - task: compose
+        vars:
+          ARGS: run {{ .DOCKER_COMPOSE_USER }} --rm node npm {{ .ARGS }} {{ .CLI_ARGS }}
 
   compose:
-    # internal: true
+    internal: true
     cmds:
+      # https://gist.github.com/smxsm/67a348b79d5cd4119c24b5902ba56f53?permalink_comment_id=4681650#gistcomment-4681650
+      - docker network inspect frontend &>/dev/null || docker network create frontend
       - '{{ .DOCKER_COMPOSE }} {{ .ARGS }}'
+
+  dev:coding-standards:markdown:apply:
+    cmds:
+      - docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint --ignore node_modules --ignore vendor --ignore var '**/*.md' --fix
+
+  dev:coding-standards:markdown:check:
+    cmds:
+      - docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint --ignore node_modules --ignore vendor --ignore var '**/*.md'
 
   dev:coding-standards:markdown:
     cmds:
-      - docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint --ignore node_modules --ignore vendor --ignore var '**/*.md' --fix
-      - docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint --ignore node_modules --ignore vendor --ignore var '**/*.md'
+      - task: dev:coding-standards:markdown:apply
+      - task: dev:coding-standards:markdown:check
+
+  dev:coding-standards:php:apply:
+    cmds:
+      - task: compose
+        vars:
+          ARGS: exec {{ .DOCKER_COMPOSE_USER }} phpfpm vendor/bin/php-cs-fixer --allow-risky=yes fix
+
+  dev:coding-standards:php:check:
+    cmds:
+      - task: compose
+        vars:
+          ARGS: exec {{ .DOCKER_COMPOSE_USER }} phpfpm vendor/bin/php-cs-fixer --allow-risky=yes check
 
   dev:coding-standards:php:
     cmds:
-      - task: compose
-        vars:
-          ARGS: exec phpfpm vendor/bin/php-cs-fixer --allow-risky=yes fix
+      - task: dev:coding-standards:php:apply
+      - task: dev:coding-standards:php:check
 
-      - task: compose
-        vars:
-          ARGS: exec phpfpm vendor/bin/php-cs-fixer --allow-risky=yes check
-
-  dev:coding-standards:twig:
+  dev:coding-standards:twig:apply:
     cmds:
       - task: compose
         vars:
-          ARGS: exec phpfpm vendor/bin/twig-cs-fixer lint templates --fix
+          ARGS: exec {{ .DOCKER_COMPOSE_USER }} phpfpm vendor/bin/twig-cs-fixer lint templates --fix
 
+  dev:coding-standards:twig:check:
+    cmds:
       - task: compose
         vars:
-          ARGS: exec phpfpm vendor/bin/twig-cs-fixer lint templates
+          ARGS: exec {{ .DOCKER_COMPOSE_USER }} phpfpm vendor/bin/twig-cs-fixer lint templates
+
+  dev:coding-standards:twig:
+    cmds:
+      - task: dev:coding-standards:twig:apply
+      - task: dev:coding-standards:twig:check
 
   dev:coding-standards:
     cmds:
@@ -76,7 +119,7 @@ tasks:
     cmds:
       - task: compose
         vars:
-          ARGS: exec phpfpm vendor/bin/phpstan analyse --configuration=phpstan.dist.neon
+          ARGS: exec {{ .DOCKER_COMPOSE_USER }} phpfpm vendor/bin/phpstan analyse --configuration=phpstan.dist.neon
 
   dev:xdebug:
     cmds:

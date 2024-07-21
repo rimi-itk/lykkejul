@@ -1,0 +1,100 @@
+on: pull_request
+
+name: Review
+
+env:
+  TASK_DOCKER_COMPOSE_USER: '--user root'
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    name: Changelog should be updated
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Git fetch
+        run: git fetch
+
+      - name: Check that changelog has been updated.
+        run: git diff --exit-code origin/${{ github.base_ref }} -- CHANGELOG.md && exit 1 || exit 0
+
+  composer-normalize:
+    name: composer-normalize
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      # https://github.com/marketplace/actions/setup-go-task-task-taskfile
+      - name: Setup Task
+        uses: pnorton5432/setup-task@v1
+
+      - run: |
+          task install
+          task composer -- install
+          task composer -- normalize
+
+  coding-standards-markdown:
+    name: Markdown coding standards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # https://github.com/marketplace/actions/setup-go-task-task-taskfile
+      - name: Setup Task
+        uses: pnorton5432/setup-task@v1
+
+      - name: Coding standards
+        run: |
+          task install
+          task dev:coding-standards:markdown:check
+
+  coding-standards-php:
+    name: PHP coding standards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # https://github.com/marketplace/actions/setup-go-task-task-taskfile
+      - name: Setup Task
+        uses: pnorton5432/setup-task@v1
+
+      - name: Coding standards
+        run: |
+          task install
+          task dev:coding-standards:php:check
+
+  coding-standards-twig:
+    name: Twig coding standards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # https://github.com/marketplace/actions/setup-go-task-task-taskfile
+      - name: Setup Task
+        uses: pnorton5432/setup-task@v1
+
+      - name: Coding standards
+        run: |
+          task install
+          task dev:coding-standards:twig:check
+
+  code-analysis-php:
+    name: PHP code analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # https://github.com/marketplace/actions/setup-go-task-task-taskfile
+      - name: Setup Task
+        uses: pnorton5432/setup-task@v1
+
+      - name: Code analysis
+        run: |
+          task install
+          task dev:code-analysis:php
