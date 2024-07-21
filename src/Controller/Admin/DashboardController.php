@@ -15,29 +15,39 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
-    /**
-     * @Route("/admin", name="admin")
-     */
+    public function __construct(
+        private readonly AdminUrlGenerator $adminUrlGenerator
+    ) {
+    }
+
+    #[\Override]
+    #[Route(path: '/admin', name: 'admin')]
     public function index(): Response
     {
-        $routeBuilder = $this->get(AdminUrlGenerator::class);
+        $routeBuilder = $this->adminUrlGenerator;
 
         return $this->redirect($routeBuilder->setController(PlayerCrudController::class)->generateUrl());
     }
 
+    #[\Override]
     public function configureDashboard(): Dashboard
     {
+        $title = $this->getParameter('site_name');
+        \assert(\is_string($title));
+
         return Dashboard::new()
-            ->setTitle($this->getParameter('site_name'));
+            ->setTitle($title);
     }
 
+    #[\Override]
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('Players', 'icon class', Player::class);
-        yield MenuItem::linkToCrud('Wins', 'icon class', Win::class);
-        yield MenuItem::linktoRoute('Play', 'icon class', 'play_play');
+        yield MenuItem::linkToCrud('Players', 'fa fa-users', Player::class);
+        yield MenuItem::linkToCrud('Wins', 'fa fa-medal', Win::class);
+        yield MenuItem::linkToUrl('Play', 'fa fa-dharmachakra', $this->generateUrl('play_play'));
     }
 
+    #[\Override]
     public function configureUserMenu(UserInterface $user): UserMenu
     {
         return parent::configureUserMenu($user)

@@ -2,19 +2,29 @@
 
 namespace App\Service;
 
+use App\Entity\Player;
+use App\Entity\Win;
 use App\Repository\WinRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlayService
 {
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private WinRepository $winRepository,
-        private array $playConfiguration
+        private readonly EntityManagerInterface $entityManager,
+        private readonly WinRepository $winRepository,
+        private readonly array $options
     ) {
+        $this->resolveOptions();
     }
 
-    public function getActivePlayers(int $maxNumberOfWins = null)
+    /**
+     * @return Player[]
+     */
+    public function getActivePlayers(?int $maxNumberOfWins = null): array
     {
         $query = $this->entityManager->createQuery(
             <<<'DQL'
@@ -32,7 +42,7 @@ DQL
         );
 
         $players = $query->execute([
-            'max_number_of_wins' => $maxNumberOfWins ?? $this->playConfiguration['max_number_of_wins'],
+            'max_number_of_wins' => $maxNumberOfWins ?? $this->options['max_number_of_wins'],
         ]);
 
         shuffle($players);
@@ -40,8 +50,19 @@ DQL
         return $players;
     }
 
-    public function getWins(\DateTimeInterface $date)
+    /**
+     * @return Win[]
+     */
+    public function getWins(\DateTimeInterface $date): array
     {
         return $this->winRepository->findByDate($date);
+    }
+
+    private function resolveOptions(): void
+    {
+        (new OptionsResolver())
+            ->setRequired('max_number_of_wins')
+            ->setAllowedTypes('max_number_of_wins', 'int')
+            ->resolve($this->options);
     }
 }

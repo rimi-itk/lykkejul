@@ -11,35 +11,28 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=PlayerRepository::class)
- * @UniqueEntity("name")
- */
-class Player
+#[ORM\Entity(repositoryClass: PlayerRepository::class)]
+#[UniqueEntity('name')]
+class Player implements \Stringable
 {
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private Uuid $id;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    private string $name;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $enabled = true;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @var Collection<int, Win>
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $enabled = true;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Win::class, mappedBy="player", orphanRemoval=true)
-     */
-    private $wins;
+    #[ORM\OneToMany(targetEntity: Win::class, mappedBy: 'player', orphanRemoval: true)]
+    private Collection $wins;
 
     public function __construct()
     {
@@ -77,7 +70,7 @@ class Player
     }
 
     /**
-     * @return Collection|Win[]
+     * @return Collection<int, Win>
      */
     public function getWins(): Collection
     {
@@ -106,7 +99,8 @@ class Player
         return $this;
     }
 
-    public function __toString()
+    #[\Override]
+    public function __toString(): string
     {
         return $this->getName() ?? static::class;
     }

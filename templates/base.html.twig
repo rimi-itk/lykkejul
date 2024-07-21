@@ -4,9 +4,11 @@
         <meta charset="UTF-8">
         <title>{% block title %}{{ site.name }}{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
     </body>
 </html>
