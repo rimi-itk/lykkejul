@@ -36,9 +36,7 @@ const getRandomInt = (min, max) => {
 }
 
 $(() => {
-  if (playOptions.grand_prize_day !== day) {
-    $('#grand-prize').hide()
-  }
+  $('#grand-prize').toggle(playOptions.grand_prize_day === day)
 
   const $select = $('#play_player')
   const $options = $select.find('option')

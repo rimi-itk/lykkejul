@@ -27,6 +27,11 @@ tasks:
 
       - task: site:open
 
+
+  site:open:
+    cmds:
+      - open "http://$({{ .DOCKER_COMPOSE }} port nginx 8080)"
+
   up:
     cmds:
       - task: compose

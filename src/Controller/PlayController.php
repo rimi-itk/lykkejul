@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Player;
 use App\Entity\Win;
 use App\Form\PlayType;
-use App\Repository\WinRepository;
 use App\Service\PlayService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,7 +29,7 @@ class PlayController extends AbstractController
     public function play(Request $request, PlayService $playService, EntityManagerInterface $entityManager): Response
     {
         $all = null !== $request->get('all');
-        $players = $playService->getActivePlayers($all ? 1000 : null);
+        $players = $playService->getActivePlayers($all ? \PHP_INT_MAX : null);
 
         $name = 'Mikkel';
         if (0 === strcasecmp($name, (string) $request->get('all'))) {
@@ -67,7 +66,9 @@ class PlayController extends AbstractController
             return $this->redirectToRoute('play_play');
         }
 
-        $playOptions = $this->options['play'] ?? [];
+        $playOptions = [
+            'grand_prize_day' => $playService->getGrandPrizeDay(),
+        ];
         if ($date = $request->get('date')) {
             try {
                 $playOptions['date'] = (new \DateTimeImmutable($date))->format(\DateTimeImmutable::ATOM);
@@ -84,23 +85,11 @@ class PlayController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/wins', name: 'wins')]
-    public function wins(WinRepository $repository): Response
-    {
-        $wins = $repository->findBy([], ['createdAt' => 'DESC']);
-
-        return $this->render('play/wins.html.twig', [
-            'wins' => $wins,
-        ]);
-    }
-
     private function resolveOptions(): void
     {
         (new OptionsResolver())
             ->setRequired('messages')
             ->setAllowedTypes('messages', 'array')
-            ->setRequired('play')
-            ->setAllowedTypes('play', 'array')
             ->resolve($this->options);
     }
 }

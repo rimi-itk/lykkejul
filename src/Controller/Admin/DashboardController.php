@@ -44,6 +44,9 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToCrud('Players', 'fa fa-users', Player::class);
         yield MenuItem::linkToCrud('Wins', 'fa fa-medal', Win::class);
+        yield MenuItem::linkToRoute('Settings', 'fa fa-cog', 'settings');
+
+        yield MenuItem::section();
         yield MenuItem::linkToUrl('Play', 'fa fa-dharmachakra', $this->generateUrl('play_play'));
     }
 
