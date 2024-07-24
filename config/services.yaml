@@ -30,13 +30,6 @@ services:
         arguments:
             $options:
                 messages: '%env(json:MESSAGES)%'
-                play:
-                    grand_prize_day: '%env(int:GRAND_PRIZE_DAY)%'
-
-    App\Service\PlayService:
-        arguments:
-            $options:
-                max_number_of_wins: '%env(int:MAX_NUMBER_OF_WINS)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

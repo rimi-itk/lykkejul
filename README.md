@@ -21,7 +21,7 @@ docker compose run --rm node npm run build
 
 # Start the show
 docker compose --env-file .env.docker.local --file docker-compose.server.yml up --detach
-docker compose --env-file .env.docker.local --file docker-compose.server.yml exec phpfpm composer install --no-dev
+docker compose --env-file .env.docker.local --file docker-compose.server.yml exec phpfpm composer install --no-dev --classmap-authoritative
 docker compose --env-file .env.docker.local --file docker-compose.server.yml exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 ```
 
