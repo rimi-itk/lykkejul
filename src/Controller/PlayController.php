@@ -20,7 +20,7 @@ class PlayController extends AbstractController
      * @param array<string, mixed> $options
      */
     public function __construct(
-        private readonly array $options
+        private readonly array $options,
     ) {
         $this->resolveOptions();
     }
