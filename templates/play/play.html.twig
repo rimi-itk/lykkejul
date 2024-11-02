@@ -63,6 +63,10 @@
 
         {% set grand_prize_url = path('play_play', {all: null == app.request.get('all') ? 'Mikkel' : true}) %}
         <a style="display: none" id="grand-prize" href="{{ grand_prize_url }}">{{ 'Santa Claus'|trans }}</a>
+
+        <a id="not-by-ai" href="https://notbyai.fyi/">
+            <img src="{{ asset('images/Produced-By-Human-Not-By-AI-Badge-white.svg') }}" alt="{{ 'Not By AI'|trans }}"/>
+        </a>
     </div>
 {% endblock %}
 
