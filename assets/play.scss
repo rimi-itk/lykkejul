@@ -151,3 +151,12 @@ form {
 button:focus {
   box-shadow: none !important;
 }
+
+#not-by-ai {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1ex;
+  width: auto;
+  height: auto;
+}

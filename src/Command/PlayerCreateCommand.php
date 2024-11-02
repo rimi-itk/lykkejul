@@ -18,7 +18,7 @@ class PlayerCreateCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly ValidatorInterface $validator
+        private readonly ValidatorInterface $validator,
     ) {
         parent::__construct();
     }
@@ -46,7 +46,7 @@ class PlayerCreateCommand extends Command
                 throw new ValidationFailedException((string) $errors, $errors);
             }
             $this->entityManager->persist($player);
-            $io->success(sprintf('Player %s created (id: %s)', $player->getName(), $player->getId()));
+            $io->success(\sprintf('Player %s created (id: %s)', $player->getName(), $player->getId()));
         }
         $this->entityManager->flush();
 
